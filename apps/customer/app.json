@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Trades",
+    "slug": "trades-customer",
+    "scheme": "trades",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "icon": "./assets/icon.png",
+    "splash": { "image": "./assets/splash.png", "resizeMode": "contain", "backgroundColor": "#0E7C66" },
+    "ios": {
+      "bundleIdentifier": "mu.trades.customer",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We use your location to find tradespeople near you and to fill in your job address.",
+        "NSCameraUsageDescription": "Take photos of the problem so pros can quote accurately.",
+        "NSPhotoLibraryUsageDescription": "Attach photos of the problem to your request."
+      },
+      "config": { "googleMapsApiKey": "REPLACE_WITH_IOS_MAPS_KEY" }
+    },
+    "android": {
+      "package": "mu.trades.customer",
+      "adaptiveIcon": { "foregroundImage": "./assets/adaptive-icon.png", "backgroundColor": "#0E7C66" },
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION", "CAMERA", "POST_NOTIFICATIONS"],
+      "config": { "googleMaps": { "apiKey": "REPLACE_WITH_ANDROID_MAPS_KEY" } }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      ["expo-location", { "locationWhenInUsePermission": "We use your location to find tradespeople near you." }],
+      ["expo-notifications", { "color": "#0E7C66" }],
+      ["expo-image-picker", { "cameraPermission": "Take photos of the problem so pros can quote accurately." }]
+    ],
+    "experiments": { "typedRoutes": false },
+    "extra": {
+      "apiUrl": "http://localhost:3000",
+      "eas": { "projectId": "REPLACE_WITH_EAS_PROJECT_ID" }
+    }
+  }
+}

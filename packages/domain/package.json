@@ -1,0 +1,11 @@
+{
+  "name": "@trades/domain",
+  "version": "1.0.0",
+  "description": "Pure, dependency-free domain logic: money, fees, state machines, ledger postings, dispatch ranking, negotiation rules",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "tsc -p tsconfig.json && node --test dist/test/*.test.js"
+  }
+}

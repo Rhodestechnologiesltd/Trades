@@ -1,0 +1,28 @@
+:root { --brand: #0e7c66; --brand-dark: #095c4c; --brand-soft: #e3f4ef; --urgent: #d64545; --bg: #f6f7f9; --surface: #fff; --border: #e3e6ea; --text: #14181f; --muted: #5d6673; --faint: #8c95a1;
+  --danger: #c53030; --success: #1f8f5f; --warning: #b7791f; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; color: var(--text); }
+* { box-sizing: border-box; } body { margin: 0; background: var(--bg); line-height: 1.5; } a { color: var(--brand); }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+header.site { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 5; }
+header.site .container { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+header.site .logo { font-weight: 800; font-size: 20px; color: var(--text); text-decoration: none; } header.site nav { display: flex; gap: 18px; align-items: center; }
+header.site nav a { text-decoration: none; color: var(--text); font-weight: 500; }
+.hero { background: linear-gradient(135deg, #0e7c66, #095c4c); color: #fff; padding: 72px 0 64px; }
+.hero h1 { font-size: 44px; line-height: 1.1; margin: 0 0 14px; letter-spacing: -0.02em; } .hero p { font-size: 18px; opacity: .9; max-width: 560px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--brand); background: var(--brand); color: #fff; border-radius: 10px; padding: 11px 20px; font-weight: 600; font-size: 15px; cursor: pointer; text-decoration: none; font-family: inherit; }
+.btn.secondary { background: #fff; color: var(--brand); } .btn.urgent { background: var(--urgent); border-color: var(--urgent); } .btn.ghost { background: transparent; border-color: transparent; color: var(--brand); }
+.btn.light { background: #fff; color: var(--brand-dark); border-color: #fff; } .btn:disabled { opacity: .55; cursor: default; } .btn.block { width: 100%; justify-content: center; }
+.grid { display: grid; gap: 16px; } .cats { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); } .two { grid-template-columns: 1fr 1fr; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } .hero h1 { font-size: 32px; } }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px; } .card.link { text-decoration: none; color: inherit; transition: box-shadow .15s; } .card.link:hover { box-shadow: 0 4px 16px rgba(0,0,0,.07); }
+.card.brand { border: 1.5px solid var(--brand); }
+section { padding: 40px 0; } h2 { font-size: 26px; margin: 0 0 18px; } .muted { color: var(--muted); } .faint { color: var(--faint); font-size: 13px; }
+label { display: block; font-weight: 600; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
+input, select, textarea { width: 100%; font: inherit; font-size: 16px; padding: 11px 12px; border: 1px solid var(--border); border-radius: 10px; background: #fff; } textarea { min-height: 110px; }
+.pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #eef0f3; color: var(--muted); }
+.pill.success { background: #e2f5eb; color: var(--success); } .pill.warning { background: #fdf3e1; color: var(--warning); } .pill.danger { background: #fde8e8; color: var(--danger); } .pill.info { background: #e6f0fa; color: #2b6cb0; }
+.banner { padding: 12px 14px; border-radius: 10px; background: #e6f0fa; color: #1d4f85; margin: 12px 0; } .banner.danger { background: #fde8e8; color: var(--danger); } .banner.success { background: #e2f5eb; color: var(--success); } .banner.warning { background: #fdf3e1; color: #7a5a00; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; } .spread { justify-content: space-between; } .stack > * + * { margin-top: 12px; }
+.kv { display: grid; grid-template-columns: 1fr auto; gap: 6px; } .kv .total { font-weight: 700; border-top: 1px solid var(--border); padding-top: 6px; }
+.seg { display: flex; background: #eef0f3; border-radius: 10px; padding: 4px; gap: 4px; } .seg button { flex: 1; border: 0; background: transparent; padding: 10px; border-radius: 8px; font: inherit; font-weight: 600; color: var(--muted); cursor: pointer; }
+.seg button.on { background: #fff; color: var(--brand); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+footer.site { padding: 32px 0; color: var(--faint); font-size: 13px; border-top: 1px solid var(--border); margin-top: 40px; }

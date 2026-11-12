@@ -1,0 +1,72 @@
+# Local development stack: PostGIS, Redis, optional S3 storage, API, worker, admin dashboard, customer web.
+# Mobile apps run with Expo on your machine and point EXPO_PUBLIC_API_URL at the API.
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment: { POSTGRES_USER: trades, POSTGRES_PASSWORD: trades, POSTGRES_DB: trades }
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U trades"], interval: 5s, retries: 10 }
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  # Optional S3-compatible storage for photo uploads. Not needed to run migrations, seed or the API.
+  # MinIO stopped publishing free images on Docker Hub; start this only if you set S3_IMAGE to an
+  # image you can pull:  S3_IMAGE=<image> docker compose --profile storage up -d minio
+  minio:
+    profiles: ["storage"]
+    image: ${S3_IMAGE:-minio/minio:latest}
+    command: server /data --console-address ":9001"
+    environment: { MINIO_ROOT_USER: minio, MINIO_ROOT_PASSWORD: minio-secret }
+    ports: ["9000:9000", "9001:9001"]
+    volumes: [miniodata:/data]
+
+  migrate:
+    build: { context: ., dockerfile: backend/Dockerfile }
+    command: ["sh", "-c", "node dist/src/scripts/migrate.js && node dist/src/scripts/seed-demo.js"]
+    env_file: backend/.env.example
+    environment: &apienv
+      DATABASE_URL: postgres://trades:trades@db:5432/trades
+      REDIS_URL: redis://redis:6379
+      S3_ENDPOINT: http://minio:9000
+      S3_ACCESS_KEY_ID: minio
+      S3_SECRET_ACCESS_KEY: minio-secret
+      OTP_DEV_ECHO: "true"
+      PAYMENT_GATEWAY: sandbox
+      DISBURSEMENT_RAIL: sandbox
+      PUBLIC_API_URL: http://localhost:3000
+    depends_on: { db: { condition: service_healthy } }
+
+  api:
+    build: { context: ., dockerfile: backend/Dockerfile }
+    env_file: backend/.env.example
+    environment: *apienv   # API relays the outbox so socket events reach connected clients
+    ports: ["3000:3000"]
+    depends_on: { migrate: { condition: service_completed_successfully }, redis: { condition: service_started } }
+
+  worker:
+    build: { context: ., dockerfile: backend/Dockerfile }
+    command: ["node", "dist/src/worker.js"]
+    env_file: backend/.env.example
+    environment: { <<: *apienv, OUTBOX_RELAY: "false" }
+    depends_on: { migrate: { condition: service_completed_successfully } }
+
+  admin:
+    image: node:20-alpine
+    working_dir: /repo
+    command: ["sh", "-c", "npm install && npm run dev -w @trades/admin -- --host 0.0.0.0"]
+    environment: { VITE_API_URL: http://localhost:3000 }
+    volumes: [".:/repo"]
+    ports: ["5173:5173"]
+
+  web:
+    image: node:20-alpine
+    working_dir: /repo
+    command: ["sh", "-c", "npm install && npm run dev -w @trades/web"]
+    environment: { NEXT_PUBLIC_API_URL: http://localhost:3000 }
+    volumes: [".:/repo"]
+    ports: ["3001:3001"]
+
+volumes: { pgdata: {}, miniodata: {} }

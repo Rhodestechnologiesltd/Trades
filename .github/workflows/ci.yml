@@ -1,0 +1,31 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env: { POSTGRES_USER: postgres, POSTGRES_HOST_AUTH_METHOD: trust }
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm install
+      - name: Domain unit tests (fees, ledger, state machines, dispatch, negotiation, recurrence)
+        run: npm run test:domain
+      - name: SQL safety tests (PostGIS stub on runner PG)
+        run: sudo apt-get update && sudo apt-get install -y postgresql && npm run test:sql
+      - name: Backend build
+        run: npm run build -w @trades/backend
+      - name: End-to-end business flows
+        run: npm run test:e2e -w @trades/backend
+      - name: Typecheck apps
+        run: |
+          npm run typecheck -w @trades/customer-app
+          npm run typecheck -w @trades/provider-app
+          npx tsc -p apps/admin --noEmit
+      - name: Build admin + web
+        run: npm run build -w @trades/admin && npm run build -w @trades/web

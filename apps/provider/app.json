@@ -1,0 +1,89 @@
+{
+  "expo": {
+    "name": "Trades Pro",
+    "slug": "trades-provider",
+    "scheme": "trades-provider",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0E7C66"
+    },
+    "ios": {
+      "bundleIdentifier": "mu.trades.pro",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Trades Pro uses your location to send you nearby jobs and show customers your arrival time.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "While you are online, Trades Pro uses your location in the background so you keep receiving nearby urgent jobs and customers can track your arrival.",
+        "NSCameraUsageDescription": "Take photos of your ID, licences and completed work.",
+        "NSPhotoLibraryUsageDescription": "Upload photos of your documents and completed work.",
+        "UIBackgroundModes": [
+          "location",
+          "fetch",
+          "remote-notification"
+        ]
+      },
+      "config": {
+        "googleMapsApiKey": "REPLACE_WITH_IOS_MAPS_KEY"
+      }
+    },
+    "android": {
+      "package": "mu.trades.pro",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0E7C66"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_LOCATION",
+        "CAMERA",
+        "POST_NOTIFICATIONS"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "REPLACE_WITH_ANDROID_MAPS_KEY"
+        }
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "While you are online, Trades Pro uses your location in the background to send you nearby jobs.",
+          "isAndroidBackgroundLocationEnabled": true,
+          "isAndroidForegroundServiceEnabled": true
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#0E7C66"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Take photos of your ID, licences and completed work."
+        }
+      ],
+      "expo-document-picker"
+    ],
+    "experiments": {
+      "typedRoutes": false
+    },
+    "extra": {
+      "apiUrl": "http://localhost:3000",
+      "eas": {
+        "projectId": "REPLACE_WITH_EAS_PROJECT_ID"
+      }
+    }
+  }
+}

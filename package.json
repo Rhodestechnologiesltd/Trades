@@ -1,0 +1,21 @@
+{
+  "name": "trades-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Two-sided on-demand services marketplace (customers + tradespeople) — monorepo",
+  "workspaces": ["packages/*", "backend", "apps/*"],
+  "scripts": {
+    "build:domain": "npm run build -w @trades/domain",
+    "test:domain": "npm test -w @trades/domain",
+    "test:sql": "bash backend/test/sql/run.sh",
+    "dev:api": "npm run start:dev -w @trades/backend",
+    "dev:admin": "npm run dev -w @trades/admin",
+    "dev:web": "npm run dev -w @trades/web",
+    "dev:customer": "npm run start -w @trades/customer-app",
+    "dev:provider": "npm run start -w @trades/provider-app",
+    "db:migrate": "npm run migrate -w @trades/backend",
+    "db:seed": "npm run seed -w @trades/backend",
+    "test": "npm run test:domain && npm test -w @trades/backend"
+  },
+  "engines": { "node": ">=20" }
+}
