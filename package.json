@@ -25,6 +25,12 @@
     "node": ">=20"
   },
   "devDependencies": {
+    "expo": "52.0.49",
+    "expo-constants": "17.0.8",
+    "expo-device": "7.0.3",
+    "expo-font": "13.0.4",
+    "expo-notifications": "0.29.14",
+    "expo-secure-store": "14.0.1",
     "metro": "0.81.5",
     "metro-babel-transformer": "0.81.5",
     "metro-cache": "0.81.5",
@@ -35,6 +41,8 @@
     "metro-resolver": "0.81.5",
     "metro-symbolicate": "0.81.5",
     "metro-transform-plugins": "0.81.5",
-    "metro-transform-worker": "0.81.5"
+    "metro-transform-worker": "0.81.5",
+    "react": "18.3.1",
+    "react-native": "0.76.3"
   }
 }
