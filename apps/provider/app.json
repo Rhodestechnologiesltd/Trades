@@ -14,7 +14,7 @@
     },
     "ios": {
       "bundleIdentifier": "mu.trades.pro",
-      "supportsTablet": false,
+      "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Trades Pro uses your location to send you nearby jobs and show customers your arrival time.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "While you are online, Trades Pro uses your location in the background so you keep receiving nearby urgent jobs and customers can track your arrival.",
@@ -24,7 +24,14 @@
           "location",
           "fetch",
           "remote-notification"
-        ]
+        ],
+        "NSAppTransportSecurity": {
+          "NSExceptionDomains": {
+            "169.58.209.214": {
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            }
+          }
+        }
       },
       "config": {
         "googleMapsApiKey": "REPLACE_WITH_IOS_MAPS_KEY"

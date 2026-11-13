@@ -3,7 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "description": "Two-sided on-demand services marketplace (customers + tradespeople) — monorepo",
-  "workspaces": ["packages/*", "backend", "apps/*"],
+  "workspaces": [
+    "packages/*",
+    "backend",
+    "apps/*"
+  ],
   "scripts": {
     "build:domain": "npm run build -w @trades/domain",
     "test:domain": "npm test -w @trades/domain",
@@ -17,5 +21,20 @@
     "db:seed": "npm run seed -w @trades/backend",
     "test": "npm run test:domain && npm test -w @trades/backend"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "metro": "0.81.5",
+    "metro-babel-transformer": "0.81.5",
+    "metro-cache": "0.81.5",
+    "metro-cache-key": "0.81.5",
+    "metro-config": "0.81.5",
+    "metro-file-map": "0.81.5",
+    "metro-minify-terser": "0.81.5",
+    "metro-resolver": "0.81.5",
+    "metro-symbolicate": "0.81.5",
+    "metro-transform-plugins": "0.81.5",
+    "metro-transform-worker": "0.81.5"
+  }
 }

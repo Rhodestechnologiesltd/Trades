@@ -14,11 +14,19 @@
     },
     "ios": {
       "bundleIdentifier": "mu.trades.customer",
-      "supportsTablet": false,
+      "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "We use your location to find tradespeople near you and to fill in your job address.",
         "NSCameraUsageDescription": "Take photos of the problem so pros can quote accurately.",
-        "NSPhotoLibraryUsageDescription": "Attach photos of the problem to your request."
+        "NSPhotoLibraryUsageDescription": "Attach photos of the problem to your request.",
+        "NSAppTransportSecurity": {
+          "NSExceptionDomains": {
+            "169.58.209.214": {
+              "NSExceptionAllowsInsecureHTTPLoads": true
+            }
+          }
+        },
+        "ITSAppUsesNonExemptEncryption": false
       },
       "config": {
         "googleMapsApiKey": "REPLACE_WITH_IOS_MAPS_KEY"

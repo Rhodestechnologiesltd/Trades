@@ -1,9 +1,29 @@
 {
-  "cli": { "version": ">= 12.0.0" },
-  "build": {
-    "development": { "developmentClient": true, "distribution": "internal", "env": { "EXPO_PUBLIC_API_URL": "http://localhost:3000" } },
-    "preview": { "distribution": "internal", "env": { "EXPO_PUBLIC_API_URL": "https://api-staging.trades.mu" } },
-    "production": { "autoIncrement": true, "env": { "EXPO_PUBLIC_API_URL": "https://api.trades.mu" } }
+  "cli": {
+    "version": ">= 12.0.0"
   },
-  "submit": { "production": {} }
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://localhost:3000"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://169.58.209.214:3002"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://api.trades.mu"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
 }
