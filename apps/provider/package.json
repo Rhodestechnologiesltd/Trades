@@ -12,7 +12,7 @@
     "build:android": "eas build -p android --profile production"
   },
   "dependencies": {
-    "@expo/vector-icons": "^14.0.4",
+    "@expo/vector-icons": "14.0.4",
     "@react-native-community/datetimepicker": "8.2.0",
     "@react-native-community/slider": "4.5.5",
     "@tanstack/react-query": "^5.59.0",

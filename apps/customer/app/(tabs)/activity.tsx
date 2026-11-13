@@ -10,11 +10,13 @@ export default function Activity() {
   const [tab, setTab] = useState<'requests' | 'active' | 'past'>('active');
   const requests = useQuery({ queryKey: ['requests', 'all'], queryFn: () => api.requests.list(), enabled: tab === 'requests' });
   const bookings = useInfiniteQuery({
-    queryKey: ['bookings', tab], enabled: tab !== 'requests', initialPageParam: undefined as string | undefined,
+    queryKey: ['bookings', 'history', tab], enabled: tab !== 'requests', initialPageParam: undefined as string | undefined,
     queryFn: ({ pageParam }) => api.bookings.history({ status: tab === 'past' ? 'past' : 'active', cursor: pageParam }),
     getNextPageParam: p => p.nextCursor ?? undefined,
   });
   const items = bookings.data?.pages.flatMap(p => p.items) ?? [];
+  const requestItems = requests.data?.items;
+  const requestsUnavailable = requests.isError || (requests.isSuccess && !Array.isArray(requestItems));
   const loading = tab === 'requests' ? requests.isLoading : bookings.isLoading;
 
   return (
@@ -22,10 +24,13 @@ export default function Activity() {
       <Segmented value={tab} onChange={setTab} options={[{ value: 'active', label: 'Booked' }, { value: 'requests', label: 'Requests' }, { value: 'past', label: 'History' }]} />
       <Spacer h={4} />
       {loading ? <Loading /> : null}
-      {tab === 'requests' && !loading && !requests.data?.items.length ? (
+      {tab === 'requests' && requestsUnavailable ? (
+        <EmptyState icon="search" title="Could not load requests" body="Pull down to try again." />
+      ) : null}
+      {tab === 'requests' && !loading && !requestsUnavailable && requestItems?.length === 0 ? (
         <EmptyState icon="search" title="No requests yet" body="Post a job and nearby pros will send you quotes." action={<Button title="New request" onPress={() => router.push('/request/new')} />} />
       ) : null}
-      {tab === 'requests' && requests.data?.items.map(r => (
+      {tab === 'requests' && Array.isArray(requestItems) && requestItems.map(r => (
         <Card key={r.id} onPress={() => (r.booking_id ? router.push(`/booking/${r.booking_id}`) : router.push(`/request/${r.id}`))}>
           <Row justify="space-between">
             <Text style={{ fontWeight: '700', flex: 1 }} numberOfLines={1}>{r.title}</Text>
