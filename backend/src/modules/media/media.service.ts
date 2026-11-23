@@ -43,7 +43,7 @@ export class MediaService {
       Bucket: config.s3.bucket, Key: key, ContentType: contentType, ContentLength: sizeBytes,
       ServerSideEncryption: 'AES256',
     }), { expiresIn: 600 });
-    return { key, uploadUrl: url, method: 'PUT', headers: { 'Content-Type': contentType }, expiresInSec: 600 };
+    return { key, uploadUrl: url, method: 'PUT', headers: { 'Content-Type': contentType, 'x-amz-server-side-encryption': 'AES256' }, expiresInSec: 600 };
   }
 
   /** Signed GET; callers must have authorised access to the owning record first. */
