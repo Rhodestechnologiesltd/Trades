@@ -28,6 +28,11 @@ export function useRealtime(enabled: boolean, onEvent?: (event: string, data: an
         if (data?.bookingId) queryClient.invalidateQueries({ queryKey: ['booking', data.bookingId] });
         queryClient.invalidateQueries({ queryKey: ['bookings'] });
         queryClient.invalidateQueries({ queryKey: ['notifications'] });
+        if (event === 'message') {
+          queryClient.invalidateQueries({ queryKey: ['conversations'] });
+          queryClient.invalidateQueries({ queryKey: ['conversation'] });
+          queryClient.invalidateQueries({ queryKey: ['chat'] });
+        }
         onEvent?.(event, data);
       });
       socket.on('connect_error', async () => {

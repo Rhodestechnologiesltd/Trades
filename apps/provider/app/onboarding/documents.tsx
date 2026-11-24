@@ -29,7 +29,7 @@ export default function Documents() {
       } else {
         if (source === 'camera') await ImagePicker.requestCameraPermissionsAsync();
         const r = source === 'camera'
-          ? await ImagePicker.launchCameraAsync({ quality: 0.7, cameraType: kind === 'selfie' ? 'front' : 'back' })
+          ? await ImagePicker.launchCameraAsync({ quality: 0.7, cameraType: kind === 'selfie' ? ImagePicker.CameraType.front : ImagePicker.CameraType.back })
           : await ImagePicker.launchImageLibraryAsync({ quality: 0.7 });
         if (r.canceled) return; uri = r.assets[0].uri; mime = r.assets[0].mimeType;
       }

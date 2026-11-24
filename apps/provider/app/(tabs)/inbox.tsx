@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { timeAgo } from '@trades/shared';
-import { Button, EmptyState, Loading, Muted, Screen, colors, space, useApi } from '@trades/mobile-ui';
+import { Button, Conversations, EmptyState, Loading, Muted, Screen, Segmented, colors, space, useApi } from '@trades/mobile-ui';
 
 function route(link?: string) {
   const m = link?.match(/^trades-provider:\/\/(requests|bookings|quotes|earnings|disputes)\/?([\w-]*)/);
@@ -12,12 +13,20 @@ function route(link?: string) {
 }
 
 export default function Inbox() {
+  const [tab, setTab] = useState<'messages' | 'updates'>('messages');
+  return <View style={{ flex: 1, backgroundColor: colors.bg }}>
+    <View style={{ padding: space(4) }}><Segmented value={tab} onChange={setTab} options={[{ value: 'messages', label: 'Messages' }, { value: 'updates', label: 'Updates' }]} /></View>
+    {tab === 'messages' ? <Conversations /> : <Updates />}
+  </View>;
+}
+
+function Updates() {
   const api = useApi();
   const qc = useQueryClient();
   const feed = useQuery({ queryKey: ['notifications', 'feed'], queryFn: () => api.notifications.feed() });
   const readAll = useMutation({ mutationFn: () => api.notifications.readAll(), onSuccess: () => qc.invalidateQueries({ queryKey: ['notifications'] }) });
   if (feed.isLoading) return <Loading />;
-  const items = feed.data?.items ?? [];
+  const items = (feed.data?.items ?? []).filter(item => item.event_type !== 'message.received');
   return (
     <Screen refreshing={feed.isRefetching} onRefresh={feed.refetch}>
       {feed.data?.unreadCount ? <Button title="Mark all as read" variant="ghost" small onPress={() => readAll.mutate()} /> : null}

@@ -16,7 +16,7 @@ export function DateTimeField({ label, value, onChange, minimumDate }: { label: 
       </Pressable>
       {mode ? (
         <DateTimePicker
-          value={value ?? new Date(Date.now() + 24 * 3600_000)} mode={mode} minimumDate={minimumDate} minuteInterval={15}
+          value={value ?? minimumDate ?? new Date()} mode={mode} minimumDate={minimumDate} minuteInterval={15}
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           onChange={(e, d) => {
             if (e.type === 'dismissed' || !d) { setMode(null); return; }

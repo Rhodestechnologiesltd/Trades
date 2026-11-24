@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
-import { Pressable, Switch, Text, View } from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useCallback, useMemo, useState } from 'react';
+import { BackHandler, Pressable, Switch, Text, View } from 'react-native';
+import { Stack, router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { useQueryClient } from '@tanstack/react-query';
@@ -27,7 +27,7 @@ export default function NewRequest() {
   const [mode, setMode] = useState<'urgent' | 'scheduled'>(params.mode ?? 'scheduled');
   const [description, setDescription] = useState('');
   const [photos, setPhotos] = useState<string[]>([]);
-  const [when, setWhen] = useState<Date | null>(null);
+  const [when, setWhen] = useState<Date | null>(() => new Date(Math.ceil((Date.now() + 3600_000) / 900_000) * 900_000));
   const [budget, setBudget] = useState('');
   const [addressId, setAddressId] = useState<string | null>(null);
   const [pin, setPin] = useState<PickedLocation | null>(null);
@@ -46,6 +46,15 @@ export default function NewRequest() {
     const r = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], quality: 0.6, allowsMultipleSelection: true, selectionLimit: 6 - photos.length });
     if (!r.canceled) setPhotos(p => [...p, ...r.assets.map(a => a.uri)].slice(0, 6));
   }
+
+  useFocusEffect(useCallback(() => {
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (step === 'category') return false;
+      setStep(step === 'review' ? 'where' : step === 'where' ? 'details' : 'category');
+      return true;
+    });
+    return () => subscription.remove();
+  }, [step]));
 
   function next() {
     setError(null);
@@ -91,6 +100,14 @@ export default function NewRequest() {
 
   return (
     <Screen footer={footer}>
+      <Stack.Screen options={{ gestureEnabled: false, headerLeft: () => (
+        <Pressable accessibilityRole="button" accessibilityLabel="Previous step" hitSlop={12} onPress={() => {
+          if (step === 'category') router.back();
+          else setStep(step === 'review' ? 'where' : step === 'where' ? 'details' : 'category');
+        }}>
+          <Ionicons name="arrow-back" size={24} color={colors.brand} />
+        </Pressable>
+      ) }} />
       <Row gap={1} style={{ marginBottom: space(4) }}>
         {(['category', 'details', 'where', 'review'] as Step[]).map((s, i) => (
           <View key={s} style={{ flex: 1, height: 4, borderRadius: 2, backgroundColor: ['category', 'details', 'where', 'review'].indexOf(step) >= i ? colors.brand : colors.border }} />

@@ -99,6 +99,17 @@ export interface BookingListItem {
 
 export interface Page<T> { items: T[]; nextCursor: string | null }
 
+export interface ConversationSummary {
+  userId: string; name: string; preview: string; updatedAt: string; requestTitle: string; unreadCount: number;
+}
+export interface ConversationMessage {
+  id: string; sender_user_id: string; recipient_user_id: string; body: string; created_at: string;
+  requestId: string; requestTitle: string;
+}
+export interface ConversationPage extends Page<ConversationMessage> {
+  name: string; requests: Array<{ id: string; title: string }>;
+}
+
 export interface NotificationItem { id: string; event_type: string; title: string; body: string; payload: any; read_at: string | null; created_at: string }
 
 export interface PaymentInit { paymentId: string; redirectUrl: string; expiresAt?: string; breakdown: { agreedAmount: string; platformFee: string; total: string; feePct: string; currency: string } }

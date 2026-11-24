@@ -1,5 +1,5 @@
 import type {
-  Address, BookingListItem, BookingView, Category, DisputeReason, DisputeView, Earnings, JobFeedItem, Me, NotificationItem, OtpChallenge, Page,
+  ConversationSummary, ConversationPage, Address, BookingListItem, BookingView, Category, DisputeReason, DisputeView, Earnings, JobFeedItem, Me, NotificationItem, OtpChallenge, Page,
   PaymentInit, ProviderMe, RecurringAgreement, RequestListItem, RequestMode, Review, ServiceRequest, TokenPair,
 } from './types';
 
@@ -167,6 +167,10 @@ export function createApi(opts: ApiOptions) {
     reviews: {
       create: (d: { bookingId: string; rating: number; comment?: string; breakdown?: Record<string, number> }) => post('/v1/reviews', d, true),
       forUser: (userId: string) => get<Review[]>(`/v1/users/${userId}/reviews`),
+    },
+    conversations: {
+      list: () => get<ConversationSummary[]>('/v1/conversations'),
+      messages: (userId: string, cursor?: string) => get<ConversationPage>(`/v1/conversations/${userId}`, { cursor }),
     },
     notifications: {
       feed: (cursor?: string) => get<Page<NotificationItem> & { unreadCount: number }>('/v1/notifications', { cursor }),

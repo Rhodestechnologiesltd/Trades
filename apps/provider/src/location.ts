@@ -10,7 +10,7 @@ let activeBookingId: string | null = null;
  * normally, every 15 s / 25 m during an active job so the customer sees live ETA.
  * Pings carry the OS "mocked" flag; the server rejects implausible jumps (§J).
  */
-TaskManager.defineTask(LOCATION_TASK, async ({ data, error }) => {
+TaskManager.defineTask<{ locations: Location.LocationObject[] }>(LOCATION_TASK, async ({ data, error }) => {
   if (error || !data) return;
   const locations: Array<{ coords: { latitude: number; longitude: number; accuracy: number | null }; mocked?: boolean; timestamp: number }> = data.locations ?? [];
   const last = locations[locations.length - 1];

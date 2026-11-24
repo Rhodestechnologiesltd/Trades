@@ -6,3 +6,4 @@ export * from './realtime';
 export * from './device';
 export * from './upload';
 export * from './utils';
+export * from './components/conversations';

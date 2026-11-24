@@ -13,8 +13,8 @@ export function Screen({ children, scroll = true, refreshing, onRefresh, padded 
   edges?: Array<'top' | 'bottom' | 'left' | 'right'>;
 }) {
   const content = scroll ? (
-    <ScrollView
-      contentContainerStyle={[padded && styles.padded, { paddingBottom: footer ? space(28) : space(10) }]}
+    <ScrollView style={{ flex: 1 }}
+      contentContainerStyle={[padded && styles.padded, { paddingBottom: space(10) }]}
       keyboardShouldPersistTaps="handled"
       refreshControl={onRefresh ? <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} tintColor={colors.brand} /> : undefined}
     >
@@ -218,7 +218,7 @@ export function IconCircle({ name, color = colors.brand, bg = colors.brandSoft, 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
   padded: { padding: space(4) },
-  footer: { position: 'absolute', left: 0, right: 0, bottom: 0, padding: space(4), paddingBottom: space(8), backgroundColor: colors.surface, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border },
+  footer: { flexShrink: 0, padding: space(4), paddingBottom: space(8), backgroundColor: colors.surface, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border },
   card: { backgroundColor: colors.surface, borderRadius: radius.lg, padding: space(4), marginBottom: space(3), ...shadow },
   btn: { height: 52, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center', borderWidth: 1.5, paddingHorizontal: space(5) },
   btnSmall: { height: 38, paddingHorizontal: space(3) },
